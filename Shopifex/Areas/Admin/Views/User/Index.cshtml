@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<Shopifex.Models.ApplicationUser>
+
+<h2>Użytkownicy</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj nowego użytkownika</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Rola</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Edytuj</a>
+                    @if (UserManager.GetUserId(User) == user.Id)
+                    {
+                        <span class="text-muted">Nie możesz usunąć użytkownika na którym jesteś zalogowany</span>
+                    }
+                    else
+                    {
+                        <a asp-action="Delete" asp-route-id="@user.Id">Usuń</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

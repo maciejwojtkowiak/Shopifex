@@ -1,0 +1,66 @@
+﻿@model Shopifex.Models.Order
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Koszyk</h3>
+        @if (Model.Cart?.Items == null)
+        {
+            <p>Koszyk jest pusty.</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Ilość</th>
+                        <th>Cena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <tr>
+                            <td>@item.Product?.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "N/A")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h4>Łączna cena: $@Model.Cart.CalculateTotal()</h4>
+        }
+    </div>
+
+    <div class="col-md-6">
+        <h3>Formularz zamówienia</h3>
+        <form asp-action="Index" method="post">
+            <div class="form-group">
+                <label asp-for="FullName">Imię i nazwisko</label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address">Adres</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone">Numer telefonu</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Zamów</button>
+        </form>
+    </div>
+</div>

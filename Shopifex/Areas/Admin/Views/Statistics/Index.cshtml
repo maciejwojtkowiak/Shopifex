@@ -1,0 +1,61 @@
+﻿@model Shopifex.Models.Statistics
+
+<h2>Statystyki Zamówień</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Liczba zamówień</th>
+            <th>Łączna cena</th>
+            <th>Średnia cena</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Goście</strong></td>
+            <td>@Model.OrdersByGuests</td>
+            <td>@Model.TotalOrderPriceByGuests.ToString("C")</td>
+            <td>@Model.AverageOrderPriceByGuests.ToString("C")</td>
+        </tr>
+        <tr>
+            <td><strong>Użytkownicy</strong></td>
+            <td>@Model.OrdersByUsers</td>
+            <td>@Model.TotalOrderPriceByUsers.ToString("C")</td>
+            <td>@Model.AverageOrderPriceByUsers.ToString("C")</td>
+        </tr>
+        <tr>
+            <td><strong>Łącznie</strong></td>
+            <td>@Model.TotalOrders</td>
+            <td>@Model.TotalOrderPrice.ToString("C")</td>
+            <td>@Model.AverageOrderPrice.ToString("C")</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Top 5 Najpopularniejszych Produktów</h3>
+
+@if (Model.TopProducts != null && Model.TopProducts.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Liczba sprzedanych sztuk</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.TopProducts)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.QuantitySold</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak dostępnych danych o produktach.</p>
+}

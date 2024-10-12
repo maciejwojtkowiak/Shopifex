@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Potwierdzenie zamówienia";
+}
+
+<h2>Potwierdzenie zamówienia</h2>
+
+<h3>Twoje dane:</h3>
+<ul>
+    <li><strong>Pełne imię i nazwisko:</strong> @Model.FullName</li>
+    <li><strong>Adres:</strong> @Model.Address</li>
+    <li><strong>Telefon:</strong> @Model.Phone</li>
+    <li><strong>Email:</strong> @Model.Email</li>
+</ul>
+
+<p>Twoje zamówienie zostało pomyślnie złożone. Dziękujemy za zakupy!</p>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Powrót do strony głównej</a>

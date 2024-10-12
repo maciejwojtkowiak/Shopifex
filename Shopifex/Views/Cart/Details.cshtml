@@ -1,0 +1,35 @@
+﻿@model Shopifex.Models.Cart
+
+<h2>Szczegóły koszyka nr @Model.Id</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Ilość</th>
+            <th>Cena jednostkowa</th>
+            <th>Łączna cena</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Product?.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Product?.Price.ToString("C")</td>
+                <td>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "N/A")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Łączna cena: @Model.CalculateTotal() zł</h3>
+
+<a asp-action="SavedCarts" class="btn btn-secondary">Powrót do zapisanych koszyków</a>
+<form asp-action="DeleteSavedCart" asp-route-id="@Model.Id" method="post" style="display:inline-block;">
+    <button type="submit" class="btn btn-danger">Usuń</button>
+</form>
+<form asp-action="RestoreSavedCart" asp-route-id="@Model.Id" method="post" style="display:inline-block;">
+    <button type="submit" class="btn btn-primary">Załaduj</button>
+</form>

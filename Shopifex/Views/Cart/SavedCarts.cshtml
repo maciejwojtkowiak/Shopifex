@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Shopifex.Models.Cart>
+
+<h2>Zapisane koszyki</h2>
+
+@if (!Model.Any())
+{
+    <p>Nie masz żadnych zapisanych koszyków.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nr Koszyka</th>
+                <th>Łączna Cena</th>
+                <th>Ilość Produktów</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cart in Model)
+            {
+                <tr>
+                    <td>@cart.Id</td>
+                    <td>@cart.CalculateTotal() zł</td>
+                    <td>@cart.Items.Count()</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@cart.Id" class="btn btn-primary">Pokaż</a>
+                        <form asp-action="DeleteSavedCart" asp-route-id="@cart.Id" method="post" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

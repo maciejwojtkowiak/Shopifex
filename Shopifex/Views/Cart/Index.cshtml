@@ -1,0 +1,61 @@
+﻿@model Shopifex.Models.Cart
+
+<h2>Koszyk</h2>
+
+@if (!Model.Items.Any())
+{
+    <p>Koszyk jest pusty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Ilość</th>
+                <th>Cena</th>
+                <th>Akcja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product?.Name</td>
+                    <td>
+                        <form asp-action="UpdateQuantity" asp-controller="Cart" method="post" style="display: inline-block;">
+                            <input type="hidden" name="productId" value="@item.Product?.Id" />
+                            <button type="submit" name="action" value="decrease" class="btn btn-secondary">-</button>
+                            <span>@item.Quantity</span>
+                            <button type="submit" name="action" value="increase" class="btn btn-secondary">+</button>
+                        </form>
+                    </td>
+                    <td>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "N/A")</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-controller="Cart" method="post">
+                            <input type="hidden" name="productId" value="@item.Product?.Id" />
+                            <button type="submit" class="btn btn-danger">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Łączna cena: @Model.CalculateTotal() zł</h3>
+
+    <form asp-action="Index" asp-controller="Order" method="get">
+        <button type="submit" class="btn btn-primary">Przejdź do zamówienia</button>
+    </form>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="SaveCart" asp-controller="Cart" method="post">
+            <button type="submit" class="btn btn-secondary">Zapisz koszyk</button>
+        </form>
+    }
+    else
+    {
+        <p>Zaloguj się, aby zapisać koszyk.</p>
+    }
+}

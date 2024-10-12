@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Shopifex.Models.Order>
+
+<h2>Historia zamówień</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Cena</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CreatedAt</td>
+                <td>@item.Cart.CalculateTotal()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

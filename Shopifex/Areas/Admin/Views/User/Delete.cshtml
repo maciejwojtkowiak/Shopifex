@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@model Shopifex.Models.ApplicationUser
+
+<h2>Usuń użytkownika</h2>
+
+<form asp-action="Delete" method="post">
+    <h3>Czy na pewno chcesz usunąć tego użytkownika?</h3>
+    <div>
+        <h4>@Model.Email</h4>
+        <input type="hidden" asp-for="Id" />
+    </div>
+
+    @if (UserManager.GetUserId(User) == Model.Id)
+    {
+        <div class="alert alert-warning">
+            Nie możesz usunąć aktualnie zalogowanego użytkownika.
+        </div>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-danger">Usuń</button>
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    }
+</form>

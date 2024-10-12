@@ -1,0 +1,14 @@
+﻿@model Shopifex.Models.ApplicationUser
+
+<h2>Edytuj użytkownika</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" asp-for="Email" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Zapisz zmiany</button>
+</form>
