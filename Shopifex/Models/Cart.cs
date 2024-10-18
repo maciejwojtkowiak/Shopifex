@@ -42,7 +42,7 @@ namespace Shopifex.Models
 
         public decimal CalculateTotal()
         {
-            return Items.Sum(i => i.Product.Price * i.Quantity);
+            return (decimal)Items.Sum(i => i.Product.Price! * i.Quantity)!;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopifex.Models;
 
@@ -10,9 +11,11 @@ using Shopifex.Models;
 namespace Shopifex.Migrations
 {
     [DbContext(typeof(ShopifexContext))]
-    partial class ShopifexContextModelSnapshot : ModelSnapshot
+    [Migration("20241013134119_ProductImage")]
+    partial class ProductImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -254,21 +257,6 @@ namespace Shopifex.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("Shopifex.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("Shopifex.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -299,9 +287,6 @@ namespace Shopifex.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
@@ -320,16 +305,12 @@ namespace Shopifex.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImageData")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -338,13 +319,10 @@ namespace Shopifex.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -432,25 +410,9 @@ namespace Shopifex.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shopifex.Models.Product", b =>
-                {
-                    b.HasOne("Shopifex.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Shopifex.Models.Cart", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Shopifex.Models.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

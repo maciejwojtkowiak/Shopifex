@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopifex.Models;
 
@@ -10,9 +11,11 @@ using Shopifex.Models;
 namespace Shopifex.Migrations
 {
     [DbContext(typeof(ShopifexContext))]
-    partial class ShopifexContextModelSnapshot : ModelSnapshot
+    [Migration("20241018101407_ProductCat")]
+    partial class ProductCat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -320,8 +323,7 @@ namespace Shopifex.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired()
+                    b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -329,7 +331,7 @@ namespace Shopifex.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImageData")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -338,8 +340,7 @@ namespace Shopifex.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

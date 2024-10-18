@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Shopifex.Models.Category>
+
+<h2>Lista kategorii</h2>
+<a asp-action="Create" class="btn btn-primary">Dodaj kategorię</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning">Edytuj</a>
+                    <a asp-action="Details" asp-route-id="@category.Id" class="btn btn-info">Szczegóły</a>
+                    <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

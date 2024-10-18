@@ -1,8 +1,8 @@
-﻿@model Shopifex.Models.Product
+﻿@model Shopifex.Models.Category
 
-<h2>Usuń produkt</h2>
+<h2>Usuń kategorię</h2>
 
-<p>Czy na pewno chcesz usunąć produkt <strong>@Model.Name</strong>?</p>
+<p>Czy na pewno chcesz usunąć kategorię <strong>@Model.Name</strong>?</p>
 
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />

@@ -30,7 +30,7 @@ else
                             <button type="submit" name="action" value="increase" class="btn btn-secondary">+</button>
                         </form>
                     </td>
-                    <td>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "N/A")</td>
+                    <td>@(item.Product != null ? (item.Product.Price * item.Quantity)?.ToString("C") : "N/A")</td>
                     <td>
                         <form asp-action="RemoveFromCart" asp-controller="Cart" method="post">
                             <input type="hidden" name="productId" value="@item.Product?.Id" />

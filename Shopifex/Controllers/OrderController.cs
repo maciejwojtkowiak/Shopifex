@@ -42,6 +42,7 @@ namespace Shopifex.Controllers
             var cart = _cartService.GetCart();
             _cartService.AddToDatabase(cart);
             model.Cart = cart;
+            model.Status = Constants.OrderStatusEnum.InProgress;
             if (!ModelState.IsValid)
             {
                 return View(model);

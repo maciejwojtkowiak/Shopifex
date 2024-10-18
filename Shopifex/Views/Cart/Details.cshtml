@@ -17,8 +17,8 @@
             <tr>
                 <td>@item.Product?.Name</td>
                 <td>@item.Quantity</td>
-                <td>@item.Product?.Price.ToString("C")</td>
-                <td>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "N/A")</td>
+                <td>@item.Product?.Price?.ToString("C")</td>
+                <td>@(item.Product != null ? (item.Product.Price * item.Quantity)?.ToString("C") : "N/A")</td>
             </tr>
         }
     </tbody>

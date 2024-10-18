@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shopifex.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shopifex.Models
 {
@@ -21,6 +22,8 @@ namespace Shopifex.Models
         [Required(ErrorMessage = "Adres e-mail jest wymagany.")]
         [EmailAddress(ErrorMessage = "Podaj poprawny adres e-mail.")]
         public string Email { get; set; }
+
+        public OrderStatusEnum Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

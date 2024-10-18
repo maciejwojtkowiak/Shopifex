@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<Shopifex.Models.Product>
 
-<h2>Product List</h2>
+<h2>Lista produktów</h2>
 
 <div class="product-list">
     @foreach (var product in Model)
     {
         <div class="product-item">
-            <img src="@product.ImageUrl" alt="@product.Name" style="width: 200px; height: 200px;" />
+            <img src="data:image/jpeg;base64,@product.ImageData" alt="@product.Name" style="width: 200px; height: 200px;" />
             <h3>@product.Name</h3>
             <p>@product.Description</p>
-            <p><strong>Cena:</strong> @product.Price.ToString("C")</p>
+            <p><strong>Cena:</strong> @product.Price?.ToString("C")</p>
 
             <form asp-action="AddToCart" asp-controller="Cart" method="post">
                 <input type="hidden" name="productId" value="@product.Id" />
-                <label for="quantity">Quantity:</label>
+                <label for="quantity">Ilość:</label>
                 <input type="number" name="quantity" min="1" value="1" style="width: 50px;" />
                 <button type="submit" class="btn btn-success">Dodaj do koszyka</button>
             </form>

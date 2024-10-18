@@ -80,7 +80,13 @@ namespace Shopifex.Controllers.Admin
             {
                 return NotFound();
             }
-            return View(user);
+            var userViewModel = new EditUserViewModel
+            {
+                Email = user.Email,
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+            };
+            ViewData["Roles"] = _roleManager.Roles.Select(r => r.Name).ToList();
+            return View(userViewModel);
         }
 
         [HttpPost]

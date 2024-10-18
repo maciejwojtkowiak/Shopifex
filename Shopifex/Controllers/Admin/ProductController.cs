@@ -28,6 +28,7 @@ namespace Shopifex.Controllers.Admin
 
         public IActionResult Create()
         {
+            ViewData["Categories"] = _context.Categories.ToList();
             return View();
         }
 
@@ -49,7 +50,7 @@ namespace Shopifex.Controllers.Admin
 
                 return RedirectToAction(nameof(Index));
             }
-
+            ViewData["Categories"] = _context.Categories.ToList();
             return View(product);
         }
 

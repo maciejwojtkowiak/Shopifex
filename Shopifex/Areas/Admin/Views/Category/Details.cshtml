@@ -1,0 +1,8 @@
+﻿@model Shopifex.Models.Category
+
+<h2>Szczegóły kategorii</h2>
+
+<p><strong>Nazwa:</strong> @Model.Name</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edytuj</a>
+<a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>

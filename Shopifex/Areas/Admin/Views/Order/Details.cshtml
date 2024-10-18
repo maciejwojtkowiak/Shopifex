@@ -1,15 +1,14 @@
 ﻿@model Shopifex.Models.Order
 
-<h2>Szczegóły zamówienia nr @Model.Id</h2>
+<h2>Szczegóły Zamówienia #@Model.Id</h2>
 
-<h4>Dane zamówienia</h4>
 <p><strong>Imię i nazwisko:</strong> @Model.FullName</p>
 <p><strong>Adres:</strong> @Model.Address</p>
 <p><strong>Telefon:</strong> @Model.Phone</p>
 <p><strong>Email:</strong> @Model.Email</p>
-<p><strong>Data zamówienia:</strong> @Model.CreatedAt.ToString("dd-MM-yyyy HH:mm")</p>
+<p><strong>Data zamówienia:</strong> @Model.CreatedAt.ToString("g")</p>
 
-<h4>Produkty w zamówieniu</h4>
+<h3>Produkty</h3>
 <table class="table">
     <thead>
         <tr>
@@ -23,15 +22,13 @@
         @foreach (var item in Model.Cart.Items)
         {
             <tr>
-                <td>@item.Product.Name</td>
+                <td>@item.Product?.Name</td>
                 <td>@item.Quantity</td>
-                <td>@item.Product.Price?.ToString("C")</td>
-                <td>@(item.Product.Price * item.Quantity)$</td>
+                <td>$@item.Product?.Price</td>
+                <td>$@(item.Product.Price * item.Quantity)</td>
             </tr>
         }
     </tbody>
 </table>
 
-<h3>Łączna cena zamówienia: @Model.Cart.CalculateTotal()$</h3>
-
-<a asp-action="Index" asp-controller="Order" class="btn btn-secondary">Powrót do zamówień</a>
+<a asp-action="Index" class="btn btn-secondary">Powrót</a>

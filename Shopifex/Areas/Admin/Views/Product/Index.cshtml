@@ -1,30 +1,27 @@
 ﻿@model IEnumerable<Shopifex.Models.Product>
 
-<h2>Produkty</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Dodaj nowy produkt</a>
-</p>
+<h2>Lista produktów</h2>
+<a asp-action="Create" class="btn btn-primary">Dodaj nowy produkt</a>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Nazwa produktu</th>
+            <th>Nazwa</th>
             <th>Cena</th>
-            <th>Opis</th>
-            <th></th>
+            <th>Kategoria</th>
+            <th>Akcje</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var product in Model)
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Price.ToString("C")</td>
-                <td>@item.Description</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Category.Name</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edytuj</a>
+                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Usuń</a>
                 </td>
             </tr>
         }

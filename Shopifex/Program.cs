@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shopifex.Constants;
 using Shopifex.Models;
@@ -14,8 +15,11 @@ namespace Shopifex
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddRazorPages();
-
+            builder.Services.AddRazorPages(); ;
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
 
             builder.Services.AddHttpContextAccessor();
