@@ -1,11 +1,9 @@
 ﻿@model Shopifex.Models.Order
 @using Shopifex.Constants
 
-<h2>Edytuj Zamówienie #@Model.Id</h2>
+<h2>Utwórz nowe zamówienie</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
+<form asp-action="Create" method="post">
     <div class="form-group">
         <label asp-for="FullName"></label>
         <input asp-for="FullName" class="form-control" />
@@ -35,14 +33,38 @@
         <select asp-for="Status" class="form-control">
             @foreach (OrderStatusEnum status in Enum.GetValues(typeof(OrderStatusEnum)))
             {
-                var isSelected = status == Model.Status ? "selected" : "";
-                <!option value="@status" @isSelected>
+                <option value="@status">
                     @OrderStatusDictionary.GetOrderStatus(status)
-                </!option>
+                </option>
             }
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+    <h4>Produkty</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Ilość</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var product in ViewData["Products"] as List<Shopifex.Models.Product>)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selectedProductIds" value="@product.Id" />
+                        @product.Name
+                    </td>
+                    <td>
+                        <input type="number" name="quantities" min="1" class="form-control" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Utwórz zamówienie</button>
     <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
 </form>

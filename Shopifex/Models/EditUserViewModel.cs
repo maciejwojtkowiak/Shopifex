@@ -9,6 +9,7 @@ namespace Shopifex.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Rola jest wymagana.")]
+        [Display(Name = "Rola")]
         public string Role { get; set; }
     }
 }

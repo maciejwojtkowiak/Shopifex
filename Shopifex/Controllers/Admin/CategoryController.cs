@@ -4,6 +4,7 @@
     using global::Shopifex.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     namespace Shopifex.Controllers
     {
@@ -80,13 +81,39 @@
             [ValidateAntiForgeryToken]
             public IActionResult DeleteConfirmed(int id)
             {
-                var category = _context.Categories.Find(id);
-                if (category != null)
+                var category = _context.Categories
+                                       .Include(c => c.Products)
+                                       .FirstOrDefault(c => c.Id == id);
+
+                if (category == null)
                 {
-                    _context.Categories.Remove(category);
-                    _context.SaveChanges();
+                    return NotFound();
                 }
+
+                if (category.Products.Any())
+                {
+                    TempData["ErrorMessage"] = "Nie można usunąć kategorii, ponieważ ma przypisane produkty.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
+            }
+
+            public IActionResult Details(int id)
+            {
+                var category = _context.Categories
+                    .Include(c => c.Products)
+                    .FirstOrDefault(c => c.Id == id);
+
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
+                return View(category);
             }
         }
     }

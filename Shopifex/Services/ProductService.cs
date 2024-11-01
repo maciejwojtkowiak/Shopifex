@@ -1,4 +1,5 @@
-﻿using Shopifex.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopifex.Models;
 
 namespace Shopifex.Services
 {
@@ -11,7 +12,7 @@ namespace Shopifex.Services
             _context = context;
         }
 
-        public IEnumerable<Product> GetAllProducts() => _context.Products.ToList();
+        public IEnumerable<Product> GetAllProducts() => _context.Products.Include(p => p.Category).ToList();
 
         public Product GetProductById(int id) => _context.Products.Find(id);
 

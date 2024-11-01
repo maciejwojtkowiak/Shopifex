@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shopifex.Models;
 using Shopifex.Services;
@@ -26,6 +27,7 @@ namespace Shopifex.Controllers
             return View(cart);
         }
 
+        [HttpPost]
         public IActionResult AddToCart(int productId, int quantity)
         {
             var product = _productService.GetProductById(productId);
@@ -34,6 +36,7 @@ namespace Shopifex.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public IActionResult RemoveFromCart(int productId)
         {
             var product = _productService.GetProductById(productId);
@@ -41,6 +44,7 @@ namespace Shopifex.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult SavedCarts()
         {
             var carts = _cartService.GetUserSavedCarts();
@@ -50,6 +54,7 @@ namespace Shopifex.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public IActionResult SaveCart()
         {
             var cart = _cartService.GetCart();
@@ -58,6 +63,7 @@ namespace Shopifex.Controllers
             return RedirectToAction("SavedCarts");
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var cart = _cartService.GetSavedCartById(id);
@@ -73,6 +79,7 @@ namespace Shopifex.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteSavedCart(int id)
         {
@@ -87,6 +94,7 @@ namespace Shopifex.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult RestoreSavedCart(int id)
         {

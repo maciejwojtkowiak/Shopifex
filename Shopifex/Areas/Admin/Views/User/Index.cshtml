@@ -1,6 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<ApplicationUser> UserManager
-@model IEnumerable<Shopifex.Models.ApplicationUser>
+﻿@model IEnumerable<Shopifex.Models.UserViewModel>
 
 <h2>Użytkownicy</h2>
 
@@ -21,15 +19,15 @@
         {
             <tr>
                 <td>@user.Email</td>
-                <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
+                <td>@user.Role</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@user.Id">Edytuj</a>
-                    @if (UserManager.GetUserId(User) == user.Id)
+                    @if (User.Identity.Name == user.Email)
                     {
-                        <span class="text-muted">Nie możesz usunąć użytkownika na którym jesteś zalogowany</span>
+                        <span class="text-muted">Nie możesz edytować ani usunąć konta na którym jesteś zalogowany</span>
                     }
                     else
                     {
+                        <a asp-action="Edit" asp-route-id="@user.Id">Edytuj</a>
                         <a asp-action="Delete" asp-route-id="@user.Id">Usuń</a>
                     }
                 </td>
@@ -37,3 +35,9 @@
         }
     </tbody>
 </table>
+@if (TempData["UserErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["UserErrorMessage"]
+    </div>
+}

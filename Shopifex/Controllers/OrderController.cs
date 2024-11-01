@@ -10,12 +10,14 @@ namespace Shopifex.Controllers
     {
         private readonly CartService _cartService;
         private readonly OrderService _orderService;
+        private readonly ProductService _productService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(CartService cartService, OrderService orderService, UserManager<ApplicationUser> userManager)
+        public OrderController(CartService cartService, OrderService orderService, ProductService productService, UserManager<ApplicationUser> userManager)
         {
             _cartService = cartService;
             _orderService = orderService;
+            _productService = productService;
             _userManager = userManager;
         }
 

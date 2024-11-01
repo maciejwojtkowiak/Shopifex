@@ -24,7 +24,7 @@
     </tbody>
 </table>
 
-<h3>Łączna cena: @Model.CalculateTotal() zł</h3>
+<h3>Łączna cena: @Model.CalculateTotal() $</h3>
 
 <a asp-action="SavedCarts" class="btn btn-secondary">Powrót do zapisanych koszyków</a>
 <form asp-action="DeleteSavedCart" asp-route-id="@Model.Id" method="post" style="display:inline-block;">

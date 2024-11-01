@@ -15,11 +15,17 @@
             <tr>
                 <td>@category.Name</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning">Edytuj</a>
-                    <a asp-action="Details" asp-route-id="@category.Id" class="btn btn-info">Szczegóły</a>
-                    <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Usuń</a>
+                    <a asp-action="Edit" asp-route-id="@category.Id">Edytuj</a>
+                    <a asp-action="Details" asp-route-id="@category.Id">Szczegóły</a>
+                    <a asp-action="Delete" asp-route-id="@category.Id">Usuń</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}

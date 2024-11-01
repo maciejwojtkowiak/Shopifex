@@ -1,8 +1,32 @@
 ﻿@model Shopifex.Models.Category
 
-<h2>Szczegóły kategorii</h2>
+<h2>Details - @Model.Name</h2>
 
-<p><strong>Nazwa:</strong> @Model.Name</p>
+<div>
+    <h3>Informacje o kategorii</h3>
+    <p><strong>Nazwa:</strong> @Model.Name</p>
+</div>
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edytuj</a>
-<a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+<div>
+    <h3>Produkty w tej kategorii</h3>
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <ul>
+            @foreach (var product in Model.Products)
+            {
+                <li>
+                    <a asp-action="Details" asp-area="Product" asp-controller="Product" asp-route-id="@product.Id">
+                        <strong>@product.Name</strong>
+                    </a>
+                    - @product.Description - @product.Price?.ToString("C")
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Brak produktów w tej kategorii.</p>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Powrót do listy kategorii</a>

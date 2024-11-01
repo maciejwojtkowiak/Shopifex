@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shopifex.Constants;
 using Shopifex.Models;
+using Shopifex.Services;
 
 namespace Shopifex.Controllers.Admin
 {
@@ -12,10 +13,14 @@ namespace Shopifex.Controllers.Admin
     public class OrderController : Controller
     {
         private readonly ShopifexContext _context;
+        private readonly ProductService _productService;
+        private readonly OrderService _orderService;
 
-        public OrderController(ShopifexContext context)
+        public OrderController(ShopifexContext context, ProductService productService, OrderService orderService)
         {
             _context = context;
+            _productService = productService;
+            _orderService = orderService;
         }
 
         public IActionResult Index()
@@ -87,6 +92,42 @@ namespace Shopifex.Controllers.Admin
             _context.Orders.Remove(order);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewData["Products"] = _productService.GetAllProducts();
+            return View(new Order { Cart = new Cart() });
+        }
+
+        [HttpPost]
+        public IActionResult Create(Order order, int[] selectedProductIds, int[] quantities)
+        {
+            if (ModelState.IsValid)
+            {
+                order.Cart = new Cart();
+
+                for (int i = 0; i < selectedProductIds.Length; i++)
+                {
+                    var productId = selectedProductIds[i];
+                    var quantity = quantities[i];
+
+                    order.Cart.Items.Add(new CartItem
+                    {
+                        ProductId = productId,
+                        Quantity = quantity
+                    });
+                }
+
+                _orderService.AddOrder(order);
+
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["Products"] = _productService.GetAllProducts();
+            return View(order);
         }
     }
 }

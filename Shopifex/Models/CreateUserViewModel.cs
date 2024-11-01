@@ -10,9 +10,11 @@ namespace Shopifex.Models
 
         [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Rola jest wymagana.")]
+        [Display(Name = "Rola")]
         public string Role { get; set; }
     }
 }

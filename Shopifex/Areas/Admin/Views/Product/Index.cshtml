@@ -1,6 +1,17 @@
 ﻿@model IEnumerable<Shopifex.Models.Product>
 
 <h2>Lista produktów</h2>
+
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <label for="categoryFilter">Filtruj według kategorii:</label>
+        <select id="categoryFilter" name="categoryId" class="form-control" asp-items=@(ViewData["Categories"] as SelectList)>
+            <option value="">Wszystkie kategorie</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtruj</button>
+</form>
+
 <a asp-action="Create" class="btn btn-primary">Dodaj nowy produkt</a>
 
 <table class="table">
@@ -17,11 +28,11 @@
         {
             <tr>
                 <td>@product.Name</td>
-                <td>@product.Price</td>
+                <td>@product.Price?.ToString("C")</td>
                 <td>@product.Category.Name</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edytuj</a>
-                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Usuń</a>
+                    <a asp-action="Edit" asp-route-id="@product.Id">Edytuj</a>
+                    <a asp-action="Delete" asp-route-id="@product.Id">Usuń</a>
                 </td>
             </tr>
         }

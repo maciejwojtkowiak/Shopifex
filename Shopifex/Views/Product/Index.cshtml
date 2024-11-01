@@ -2,6 +2,16 @@
 
 <h2>Lista produktów</h2>
 
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <label for="categoryFilter">Filtruj według kategorii:</label>
+        <select id="categoryFilter" name="categoryId" class="form-control" asp-items=@(ViewData["Categories"] as SelectList)>
+            <option value="">Wszystkie kategorie</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtruj</button>
+</form>
+
 <div class="product-list">
     @foreach (var product in Model)
     {

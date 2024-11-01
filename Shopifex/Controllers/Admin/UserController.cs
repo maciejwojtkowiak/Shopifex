@@ -23,7 +23,20 @@ namespace Shopifex.Controllers.Admin
         public async Task<IActionResult> Index()
         {
             var users = _userManager.Users.ToList();
-            return View(users);
+            var userViewModels = new List<UserViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userViewModels.Add(new UserViewModel
+                {
+                    Email = user.Email,
+                    Role = string.Join(", ", roles),
+                    Id = user.Id
+                });
+            }
+
+            return View(userViewModels);
         }
 
         public IActionResult Create()
@@ -93,6 +106,13 @@ namespace Shopifex.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, EditUserViewModel model)
         {
+            var currentUserId = _userManager.GetUserId(User);
+            if (id == currentUserId)
+            {
+                TempData["ErrorMessage"] = "Nie można edytować aktualnie zalogowanego użytkownika.";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(id);
@@ -171,6 +191,26 @@ namespace Shopifex.Controllers.Admin
             var currentUserId = _userManager.GetUserId(User);
             if (user.Id == currentUserId)
             {
+                TempData["UserErrorMessage"] = "Nie można usunąć aktualnie zalogowanego użytkownika.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _userManager.GetUserId(User);
+            if (user.Id == currentUserId)
+            {
                 TempData["ErrorMessage"] = "Nie można usunąć aktualnie zalogowanego użytkownika.";
                 return RedirectToAction(nameof(Index));
             }
@@ -186,27 +226,6 @@ namespace Shopifex.Controllers.Admin
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View(user);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
             return View(user);
         }
     }
