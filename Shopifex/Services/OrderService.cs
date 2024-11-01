@@ -14,10 +14,6 @@ namespace Shopifex.Services
 
         public void AddOrder(Order order)
         {
-            order.Cart.Items.ToList().ForEach(i =>
-            {
-                _context.Products.Attach(i.Product);
-            });
             _context.Orders.Add(order);
             _context.SaveChanges();
         }

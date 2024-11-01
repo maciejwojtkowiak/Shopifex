@@ -64,7 +64,7 @@ namespace Shopifex
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
                 await CreateRoles(roleManager);
-                await CreateAdminUser(userManager);
+                await CreateAdminUser(userManager, builder.Configuration);
             }
 
             app.UseHttpsRedirection();
@@ -94,10 +94,10 @@ namespace Shopifex
             }
         }
 
-        private static async Task CreateAdminUser(UserManager<ApplicationUser> userManager)
+        private static async Task CreateAdminUser(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
-            var adminEmail = "admin@shopifex.com";
-            var adminPassword = "Admin@123";
+            var adminEmail = configuration["AdminSettings:AdminEmail"];
+            var adminPassword = configuration["AdminSettings:AdminPassword"];
 
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)

@@ -15,9 +15,7 @@
             @foreach (var product in Model.Products)
             {
                 <li>
-                    <a asp-action="Details" asp-area="Product" asp-controller="Product" asp-route-id="@product.Id">
-                        <strong>@product.Name</strong>
-                    </a>
+                      <strong>@product.Name</strong>
                     - @product.Description - @product.Price?.ToString("C")
                 </li>
             }
