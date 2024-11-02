@@ -64,6 +64,8 @@ namespace Shopifex.Services
         public void AddToDatabase(Cart cart)
         {
             _context.Carts.Add(cart);
+            /** To zapobiega zapisywaniu produktów od bazy danych */
+            /** Produkty już istnieją. Potrzebne jest utworzenie wyłącznie koszyka. */
             cart.Items.ToList().ForEach(i =>
             {
                 _context.Products.Attach(i.Product);

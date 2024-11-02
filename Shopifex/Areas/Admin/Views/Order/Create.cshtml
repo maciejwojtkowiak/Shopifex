@@ -1,4 +1,4 @@
-﻿@model Shopifex.Models.Order
+﻿@model Shopifex.Models.OrderCreateViewModel
 @using Shopifex.Constants
 
 <h2>Utwórz nowe zamówienie</h2>
@@ -41,30 +41,50 @@
     </div>
 
     <h4>Produkty</h4>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Produkt</th>
-                <th>Ilość</th>
-            </tr>
-        </thead>
-        <tbody>
 
-            @foreach (var product in ViewData["Products"] as List<Shopifex.Models.Product>)
-            {
+    @if (Model.Products == null || !Model.Products.Any())
+    {
+        <div class="alert alert-warning">
+            Dodaj najpierw produkt do bazy danych, bez produktu nie da się utworzyć zamówienia.
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        <input type="checkbox" name="selectedProductIds" value="@product.Id" />
-                        @product.Name
-                    </td>
-                    <td>
-                        <input type="number" name="quantities" min="1" class="form-control" />
-                    </td>
+                    <th>Produkt</th>
+                    <th>Ilość</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Products.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" asp-for="Products[i].IsSelected" />
+                            <input type="hidden" asp-for="Products[i].ProductName" />
+                            <input type="hidden" asp-for="Products[i].ProductId" />
+                            <p>@Model.Products[i].ProductName</p>
+                        </td>
+                        <td>
+                            <input asp-for="Products[i].Quantity" class="form-control" />
+                            <span asp-validation-for="Products[i].Quantity" class="text-danger"></span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (ViewData["noSelectedProducts"] != null)
+    {
+        <div class="alert alert-warning">
+            @ViewData["noSelectedProducts"]
+        </div>
+    }
 
-    <button type="submit" class="btn btn-primary">Utwórz zamówienie</button>
+    <button type="submit" class="btn btn-primary" @(Model.Products == null || !Model.Products.Any() ? "disabled" : "")>
+        Utwórz zamówienie
+    </button>
     <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
 </form>

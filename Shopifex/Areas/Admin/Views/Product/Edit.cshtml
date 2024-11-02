@@ -19,7 +19,7 @@
 
     <div class="form-group">
         <label asp-for="CategoryId">Kategoria</label>
-        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewData["Categories"] as List<Shopifex.Models.Category>, "Id", "Name"))">
+        <select asp-for="CategoryId" class="form-control" asp-items="@ViewData["Categories"] as SelectList">
             <option value="">Wybierz kategorię</option>
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>

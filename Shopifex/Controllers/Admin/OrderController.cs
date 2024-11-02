@@ -14,10 +14,12 @@ namespace Shopifex.Controllers.Admin
     {
         private readonly ShopifexContext _context;
         private readonly ProductService _productService;
+        private readonly CartService _cartService;
         private readonly OrderService _orderService;
 
-        public OrderController(ShopifexContext context, ProductService productService, OrderService orderService)
+        public OrderController(ShopifexContext context, CartService cartService, ProductService productService, OrderService orderService)
         {
+            _cartService = cartService;
             _context = context;
             _productService = productService;
             _orderService = orderService;
@@ -94,40 +96,67 @@ namespace Shopifex.Controllers.Admin
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["Products"] = _productService.GetAllProducts();
-            return View(new Order { Cart = new Cart() });
+            var viewModel = new OrderCreateViewModel
+            {
+                Products = _productService.GetAllProducts().Select(p => new ProductSelectionViewModel
+                {
+                    ProductId = p.Id,
+                    ProductName = p.Name
+                }).ToList()
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Order order, int[] selectedProductIds, int[] quantities)
+        public IActionResult Create(OrderCreateViewModel model)
         {
+
+            var selectedProducts = model.Products
+                .Where(p => p.IsSelected)
+                .ToList();
+
+            if (!selectedProducts.Any())
+            {
+                ViewData["noSelectedProducts"] = "Musisz wybrać przynajmniej jeden produkt z ilością większą niż 0.";
+                return View(model);
+            }
+            ViewData["noSelectedProducts"] = null;
+            foreach (var product in model.Products)
+            {
+                if (product.IsSelected && product.Quantity <= 0)
+                {
+                    ModelState.AddModelError($"Products[{model.Products.IndexOf(product)}].Quantity", "Ilość musi być większa od 0.");
+                }
+            }
             if (ModelState.IsValid)
             {
-                order.Cart = new Cart();
-
-                for (int i = 0; i < selectedProductIds.Length; i++)
+                var cart = new Cart
                 {
-                    var productId = selectedProductIds[i];
-                    var quantity = quantities[i];
-
-                    order.Cart.Items.Add(new CartItem
+                    Items = selectedProducts.Select(p => new CartItem
                     {
-                        ProductId = productId,
-                        Quantity = quantity
-                    });
-                }
+                        Product = _productService.GetProductById(p.ProductId),
+                        Quantity = p.Quantity,
+                    }).ToList()
+                };
+                _cartService.AddToDatabase(cart);
+                var order = new Order
+                {
+                    Address = model.Address,
+                    Cart = cart,
+                    Email = model.Email,
+                    FullName = model.FullName,
+                    Phone = model.Phone,
+                    Status = model.Status,
+                    UserId = null,
+                };
 
                 _orderService.AddOrder(order);
-
-
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["Products"] = _productService.GetAllProducts();
-            return View(order);
+            return View(model);
         }
     }
 }

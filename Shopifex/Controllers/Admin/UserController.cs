@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Shopifex.Constants;
 using Shopifex.Models;
 
@@ -82,7 +84,7 @@ namespace Shopifex.Controllers.Admin
                 }
             }
 
-            ViewData["Roles"] = _roleManager.Roles.Select(r => r.Name).ToList();
+            ViewData["Roles"] = new SelectList(await _roleManager.Roles.Select(r => r.Name).ToListAsync());
             return View(model);
         }
 
@@ -98,7 +100,7 @@ namespace Shopifex.Controllers.Admin
                 Email = user.Email,
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
-            ViewData["Roles"] = _roleManager.Roles.Select(r => r.Name).ToList();
+            ViewData["Roles"] = new SelectList(await _roleManager.Roles.Select(r => r.Name).ToListAsync());
             return View(userViewModel);
         }
 

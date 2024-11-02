@@ -17,7 +17,7 @@
 
     <div class="form-group">
         <label asp-for="Role"></label>
-        <select asp-for="Role" class="form-control" asp-items="@(new SelectList(ViewData["Roles"] as IEnumerable<string>))">
+        <select asp-for="Role" class="form-control" asp-items="@ViewData["Roles"] as SelectList">
             <option value="">Wybierz rolę</option>
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>
