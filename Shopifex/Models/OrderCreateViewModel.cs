@@ -25,7 +25,6 @@ namespace Shopifex.Models
 
         public OrderStatusEnum Status { get; set; }
 
-        [Required(ErrorMessage = "Musisz wybrać przynajmniej jeden produkt.")]
         public List<ProductSelectionViewModel> Products { get; set; } = new List<ProductSelectionViewModel>();
     }
 
