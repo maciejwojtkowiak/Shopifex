@@ -8,12 +8,12 @@ namespace Shopifex.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Imię i nazwisko są wymagane.")]
-        [StringLength(100, ErrorMessage = "Imię i nazwisko mogą mieć maksymalnie 100 znaków.")]
+        [StringLength(200, ErrorMessage = "Imię i nazwisko mogą mieć maksymalnie 100 znaków.")]
         [Display(Name = "Imię i nazwisko")]
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Adres jest wymagany.")]
-        [StringLength(200, ErrorMessage = "Adres może mieć maksymalnie 200 znaków.")]
+        [StringLength(300, ErrorMessage = "Adres może mieć maksymalnie 200 znaków.")]
         [Display(Name = "Adres")]
         public string Address { get; set; }
 
@@ -24,6 +24,7 @@ namespace Shopifex.Models
 
         [Required(ErrorMessage = "Adres e-mail jest wymagany.")]
         [EmailAddress(ErrorMessage = "Podaj poprawny adres e-mail.")]
+        [MaxLength(256, ErrorMessage = "Adres e-mail nie może być dłuższy niż 256 znaków.")]
         public string Email { get; set; }
 
         public OrderStatusEnum Status { get; set; }
