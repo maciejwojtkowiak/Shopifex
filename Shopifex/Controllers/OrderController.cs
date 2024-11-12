@@ -69,7 +69,7 @@ namespace Shopifex.Controllers
             var order = _orderService.GetUserOrders(_userManager.GetUserId(User)).ToList().Find(o => o.Id == id);
             if (order == null)
             {
-                return Forbid();
+                return NotFound();
             }
             return View(order);
         }

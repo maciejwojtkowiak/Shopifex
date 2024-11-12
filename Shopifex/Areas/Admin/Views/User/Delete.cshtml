@@ -7,11 +7,11 @@
 <form asp-action="Delete" method="post">
     <h3>Czy na pewno chcesz usunąć tego użytkownika?</h3>
     <div>
-        <h4>@Model.Email</h4>
+        <h4>@ViewData["UserEmail"]</h4>
         <input type="hidden" asp-for="Id" />
     </div>
 
-    @if (UserManager.GetUserId(User) == Model.Id)
+    @if (UserManager.GetUserId(User) == ViewData["UserId"])
     {
         <div class="alert alert-warning">
             Nie możesz usunąć aktualnie zalogowanego użytkownika.

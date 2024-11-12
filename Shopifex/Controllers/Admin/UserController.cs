@@ -100,7 +100,7 @@ namespace Shopifex.Controllers.Admin
                 Email = user.Email,
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
-            ViewData["Roles"] = new SelectList(await _roleManager.Roles.Select(r => r.Name).ToListAsync());
+            ViewData["Roles"] = new SelectList(await _roleManager.Roles.Select(r => r.Name).ToListAsync(), userViewModel.Role);
             return View(userViewModel);
         }
 
@@ -196,8 +196,9 @@ namespace Shopifex.Controllers.Admin
                 TempData["UserErrorMessage"] = "Nie można usunąć aktualnie zalogowanego użytkownika.";
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(user);
+            ViewData["UserId"] = user.Id;
+            ViewData["UserEmail"] = user.Email;
+            return View();
         }
 
         [HttpPost, ActionName("Delete")]

@@ -68,8 +68,8 @@ namespace Shopifex.Controllers.Admin
 
         public IActionResult Edit(int id)
         {
-            ViewData["Categories"] = _context.Categories.ToList();
             var product = _productService.GetProductById(id);
+            ViewData["Categories"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             if (product == null) return NotFound();
 
             return View(product);
@@ -79,7 +79,7 @@ namespace Shopifex.Controllers.Admin
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Product product)
         {
-            ViewData["Categories"] = _context.Categories.ToList();
+            ViewData["Categories"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             if (ModelState.IsValid)
             {
                 var existingProduct = _context.Products.FirstOrDefault(p => p.Name == product.Name && p.Id != product.Id);
