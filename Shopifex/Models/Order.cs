@@ -31,6 +31,7 @@ namespace Shopifex.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        /** Cart nullowalny dla ułatwienia walidacji danych przesłanych z widoku (bez modelu Cart) */
         public Cart? Cart { get; set; } = null!;
 
         public string? UserId { get; set; } = null!;
