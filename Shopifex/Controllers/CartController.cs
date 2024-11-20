@@ -48,6 +48,10 @@ namespace Shopifex.Controllers
         public IActionResult SavedCarts()
         {
             var carts = _cartService.GetUserSavedCarts();
+            if (carts.Count() == 0)
+            {
+                return NotFound();
+            }
             var savedCarts = carts.Where(c => c.IsSavedByUser);
             return View("SavedCarts", savedCarts);
         }
