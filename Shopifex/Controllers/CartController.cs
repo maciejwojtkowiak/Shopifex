@@ -88,7 +88,8 @@ namespace Shopifex.Controllers
         public IActionResult DeleteSavedCart(int id)
         {
             var cart = _cartService.GetSavedCartById(id);
-            if (cart == null)
+            var userId = _userManager.GetUserId(User);
+            if (cart == null || cart.UserId != userId)
             {
                 return NotFound();
             }
