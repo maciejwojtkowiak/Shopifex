@@ -11,7 +11,7 @@ namespace Shopifex.Models
         [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]
         [Display(Name = "Hasło")]
-        [StringLength(32, ErrorMessage = "Hasło musi mieć co najmniej 8 i maksymalnie 32 znaków.", MinimumLength = 8)]
+        [StringLength(100, ErrorMessage = "Hasło musi mieć co najmniej 6 i maksymalnie 100 znaków.", MinimumLength = 6)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Rola jest wymagana.")]
