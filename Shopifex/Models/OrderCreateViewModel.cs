@@ -36,5 +36,7 @@ namespace Shopifex.Models
         public bool IsSelected { get; set; }
         [Display(Name = "Ilość")]
         public int Quantity { get; set; }
+        [Display(Name = "Cena")]
+        public decimal Price { get; set; }
     }
 }
