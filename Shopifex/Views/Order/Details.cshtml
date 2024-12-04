@@ -25,7 +25,7 @@
             <tr>
                 <td>@item.Product.Name</td>
                 <td>@item.Quantity</td>
-                <td>@item.Product.Price?.ToString("C")</td>
+                <td>@item.Product.Price?.ToString() $</td>
                 <td>@(item.Product.Price * item.Quantity)$</td>
             </tr>
         }

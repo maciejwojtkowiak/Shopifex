@@ -42,6 +42,9 @@ namespace Shopifex
 
             var app = builder.Build();
 
+            /// <summary>
+            /// Automatyczne zaktualizowanie bazy danych podczas uruchomienia projektu.
+            /// </summary>
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;

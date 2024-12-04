@@ -55,6 +55,7 @@
                 <tr>
                     <th>Produkt</th>
                     <th>Ilość</th>
+                    <th>Cena sztuki</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,13 +66,14 @@
                             <input type="checkbox" asp-for="Products[i].IsSelected" />
                             <input type="hidden" asp-for="Products[i].ProductName" />
                             <input type="hidden" asp-for="Products[i].ProductId" />
+                            <input type="hidden" asp-for="Products[i].Price" />
                             <p>@Model.Products[i].ProductName</p>
                         </td>
                         <td>
                             <input asp-for="Products[i].Quantity" class="form-control" />
                             <span asp-validation-for="Products[i].Quantity" class="text-danger"></span>
                         </td>
-                        <td>Cena: @Model.Products[i].Price $</td>
+                        <td>@Model.Products[i].Price $</td>
                     </tr>
                 }
             </tbody>

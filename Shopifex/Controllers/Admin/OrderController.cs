@@ -122,7 +122,7 @@ namespace Shopifex.Controllers.Admin
             if (!selectedProducts.Any())
             {
                 ViewData["noSelectedProducts"] = "Musisz wybrać przynajmniej jeden produkt z ilością większą niż 0.";
-                return RedirectToAction(nameof(Create));
+                return View(model);
             }
             ViewData["noSelectedProducts"] = null;
             foreach (var product in model.Products)
@@ -130,7 +130,7 @@ namespace Shopifex.Controllers.Admin
                 if (product.IsSelected && product.Quantity <= 0)
                 {
                     ModelState.AddModelError($"Products[{model.Products.IndexOf(product)}].Quantity", "Ilość musi być większa od 0.");
-                    return RedirectToAction(nameof(Create));
+                    return View(model);
                 }
             }
             if (ModelState.IsValid)
@@ -156,9 +156,9 @@ namespace Shopifex.Controllers.Admin
                 };
 
                 _orderService.AddOrder(order);
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
-            return RedirectToAction(nameof(Create));
+            return View(model);
         }
     }
 }
