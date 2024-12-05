@@ -25,6 +25,10 @@ namespace Shopifex.Models
 
         public OrderStatusEnum Status { get; set; }
 
+        [Required(ErrorMessage = "Wybór użytkownika jest wymagany.")]
+        [Display(Name = "Użytkownik")]
+        public string UserId { get; set; }
+
         public List<ProductSelectionViewModel> Products { get; set; } = new List<ProductSelectionViewModel>();
     }
 

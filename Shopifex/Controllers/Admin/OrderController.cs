@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shopifex.Constants;
 using Shopifex.Models;
@@ -16,13 +18,15 @@ namespace Shopifex.Controllers.Admin
         private readonly ProductService _productService;
         private readonly CartService _cartService;
         private readonly OrderService _orderService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(ShopifexContext context, CartService cartService, ProductService productService, OrderService orderService)
+        public OrderController(ShopifexContext context, CartService cartService, ProductService productService, OrderService orderService, UserManager<ApplicationUser> userManager)
         {
             _cartService = cartService;
             _context = context;
             _productService = productService;
             _orderService = orderService;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -107,7 +111,7 @@ namespace Shopifex.Controllers.Admin
                     Price = p.Price ?? 0,
                 }).ToList()
             };
-
+            fetchUserDrodpown();
             return View(viewModel);
         }
 
@@ -122,43 +126,53 @@ namespace Shopifex.Controllers.Admin
             if (!selectedProducts.Any())
             {
                 ViewData["noSelectedProducts"] = "Musisz wybrać przynajmniej jeden produkt z ilością większą niż 0.";
+                fetchUserDrodpown();
                 return View(model);
             }
             ViewData["noSelectedProducts"] = null;
+
             foreach (var product in model.Products)
             {
                 if (product.IsSelected && product.Quantity <= 0)
                 {
                     ModelState.AddModelError($"Products[{model.Products.IndexOf(product)}].Quantity", "Ilość musi być większa od 0.");
-                    return View(model);
                 }
             }
-            if (ModelState.IsValid)
+            if (ModelState.ErrorCount > 0)
             {
-                var cart = new Cart
-                {
-                    Items = selectedProducts.Select(p => new CartItem
-                    {
-                        Product = _productService.GetProductById(p.ProductId),
-                        Quantity = p.Quantity,
-                    }).ToList()
-                };
-                _cartService.AddToDatabase(cart);
-                var order = new Order
-                {
-                    Address = model.Address,
-                    Cart = cart,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                    Phone = model.Phone,
-                    Status = model.Status,
-                    UserId = null,
-                };
-
-                _orderService.AddOrder(order);
+                fetchUserDrodpown();
                 return View(model);
             }
-            return View(model);
+
+            var cart = new Cart
+            {
+                Items = selectedProducts.Select(p => new CartItem
+                {
+                    Product = _productService.GetProductById(p.ProductId),
+                    Quantity = p.Quantity,
+                }).ToList()
+            };
+            _cartService.AddToDatabase(cart);
+            var order = new Order
+            {
+                Address = model.Address,
+                Cart = cart,
+                Email = model.Email,
+                FullName = model.FullName,
+                Phone = model.Phone,
+                Status = model.Status,
+                UserId = model.UserId ?? null,
+            };
+
+            _orderService.AddOrder(order);
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        private void fetchUserDrodpown()
+        {
+            var users = _userManager.Users.ToList();
+            ViewData["userDropdown"] = new SelectList(users, "Id", "Email");
         }
     }
 }

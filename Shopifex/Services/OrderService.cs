@@ -20,7 +20,12 @@ namespace Shopifex.Services
 
         public IEnumerable<Order> GetUserOrders(string userId)
         {
-            return _context.Orders.Include(o => o.Cart).ThenInclude(i => i.Items).ThenInclude(p => p.Product).Where(o => o.UserId == userId).ToList();
+            return _context.Orders
+                .Include(o => o.Cart)
+                .ThenInclude(i => i.Items)
+                .ThenInclude(p => p.Product)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.CreatedAt).ToList();
         }
 
         public int GetTotalOrders()

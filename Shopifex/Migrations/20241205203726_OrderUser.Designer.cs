@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopifex.Models;
 
@@ -10,9 +11,11 @@ using Shopifex.Models;
 namespace Shopifex.Migrations
 {
     [DbContext(typeof(ShopifexContext))]
-    partial class ShopifexContextModelSnapshot : ModelSnapshot
+    [Migration("20241205203726_OrderUser")]
+    partial class OrderUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
