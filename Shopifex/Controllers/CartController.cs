@@ -31,6 +31,11 @@ namespace Shopifex.Controllers
         public IActionResult AddToCart(int productId, int quantity)
         {
             var product = _productService.GetProductById(productId);
+            if (quantity < 1)
+            {
+                ViewData["CartQuantityError"] = "Ilość produktu musi wynosić przynajmniej 1";
+                return Redirect("/");
+            }
             _context.Products.Attach(product);
             _cartService.AddToCart(product, quantity);
             return RedirectToAction("Index");
@@ -48,10 +53,6 @@ namespace Shopifex.Controllers
         public IActionResult SavedCarts()
         {
             var carts = _cartService.GetUserSavedCarts();
-            if (carts.Count() == 0)
-            {
-                return NotFound();
-            }
             var savedCarts = carts.Where(c => c.IsSavedByUser);
             return View("SavedCarts", savedCarts);
         }

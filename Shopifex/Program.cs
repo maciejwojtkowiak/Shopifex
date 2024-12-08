@@ -14,12 +14,7 @@ namespace Shopifex
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddRazorPages(); ;
-            //builder.Services.Configure<ApiBehaviorOptions>(options =>
-            //{
-            //    options.SuppressModelStateInvalidFilter = true;
-            //});
-
+            builder.Services.AddRazorPages();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddDistributedMemoryCache();
