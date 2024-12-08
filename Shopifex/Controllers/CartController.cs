@@ -33,7 +33,7 @@ namespace Shopifex.Controllers
             var product = _productService.GetProductById(productId);
             if (quantity < 1)
             {
-                ViewData["CartQuantityError"] = "Ilość produktu musi wynosić przynajmniej 1";
+                TempData["CartQuantityError"] = "Ilość produktu musi wynosić przynajmniej 1";
                 return Redirect("/");
             }
             _context.Products.Attach(product);

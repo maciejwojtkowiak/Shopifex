@@ -2,6 +2,13 @@
 
 <h2>Lista produktów</h2>
 
+@if (TempData["CartQuantityError"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["CartQuantityError"]
+    </div>
+}
+
 <form method="get" asp-action="Index">
     <div class="form-group">
         <label for="categoryFilter">Filtruj według kategorii:</label>
@@ -24,9 +31,27 @@
             <form asp-action="AddToCart" asp-controller="Cart" method="post">
                 <input type="hidden" name="productId" value="@product.Id" />
                 <label for="quantity">Ilość:</label>
-                <input type="number" name="quantity" min="1" value="1" style="width: 50px;" />
+                <input type="number" name="quantity" value="1" style="width: 50px;" />
                 <button type="submit" class="btn btn-success">Dodaj do koszyka</button>
             </form>
         </div>
     }
 </div>
+
+<style>
+    .product-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 20px; 
+    }
+
+    .product-item {
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        background-color: #f9f9f9; 
+        display: flex,
+        flex-direction: column;
+    }
+</style>
