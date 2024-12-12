@@ -39,6 +39,7 @@
     <div class="form-group">
         <label>Status</label>
         <select asp-for="Status" class="form-control">
+            <option value="">-- Wybierz status --</option>
             @foreach (OrderStatusEnum status in Enum.GetValues(typeof(OrderStatusEnum)))
             {
                 <option value="@status">
@@ -46,6 +47,7 @@
                 </option>
             }
         </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
     </div>
 
     <h4>Produkty</h4>

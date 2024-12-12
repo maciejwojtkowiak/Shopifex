@@ -160,7 +160,7 @@ namespace Shopifex.Controllers.Admin
                 Email = model.Email,
                 FullName = model.FullName,
                 Phone = model.Phone,
-                Status = model.Status,
+                Status = model.Status ?? OrderStatusEnum.InProgress,
                 UserId = model.UserId ?? null,
             };
 

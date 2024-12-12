@@ -23,7 +23,8 @@ namespace Shopifex.Models
         [Display(Name = "Adres e-mail")]
         public string Email { get; set; }
 
-        public OrderStatusEnum Status { get; set; }
+        [EnumValidation(typeof(OrderStatusEnum), ErrorMessage = "Nieprawidłowy status zamówienia.")]
+        public OrderStatusEnum? Status { get; set; }
 
         [Required(ErrorMessage = "Wybór użytkownika jest wymagany.")]
         [Display(Name = "Użytkownik")]
@@ -42,5 +43,30 @@ namespace Shopifex.Models
         public int Quantity { get; set; }
         [Display(Name = "Cena")]
         public decimal Price { get; set; }
+    }
+
+    public class EnumValidationAttribute : ValidationAttribute
+    {
+        private readonly Type _enumType;
+
+        public EnumValidationAttribute(Type enumType)
+        {
+            _enumType = enumType;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value == null || value?.ToString()?.Length == 0)
+            {
+                return new ValidationResult(ErrorMessage ?? "Pole jest wymagane.");
+            }
+
+            if (!Enum.IsDefined(_enumType, value))
+            {
+                return new ValidationResult(ErrorMessage ?? $"Nieprawidłowa wartość dla {_enumType.Name}.");
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }
