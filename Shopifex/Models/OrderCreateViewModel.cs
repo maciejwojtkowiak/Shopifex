@@ -58,12 +58,12 @@ namespace Shopifex.Models
         {
             if (value == null || value?.ToString()?.Length == 0)
             {
-                return new ValidationResult(ErrorMessage ?? "Pole jest wymagane.");
+                return new ValidationResult("Pole jest wymagane.");
             }
 
             if (!Enum.IsDefined(_enumType, value))
             {
-                return new ValidationResult(ErrorMessage ?? $"Nieprawidłowa wartość dla {_enumType.Name}.");
+                return new ValidationResult($"Nieprawidłowa wartość dla {_enumType.Name}.");
             }
 
             return ValidationResult.Success;
