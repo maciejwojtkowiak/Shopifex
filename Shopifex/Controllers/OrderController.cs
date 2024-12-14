@@ -51,7 +51,7 @@ namespace Shopifex.Controllers
             TempData["OrderSubmitted"] = true;
             model.UserId = _userManager.GetUserId(User);
             _orderService.AddOrder(model);
-
+            _cartService.ClearCart();
             return View("OrderConfirmation", model);
         }
 
